@@ -1,10 +1,9 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || "https://localhost:1337";
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 export const checkUser = async () => {
-
   const user = await currentUser();
   if (!user) {
     console.log("No User Found");
@@ -14,7 +13,8 @@ export const checkUser = async () => {
     console.error("STRAPI_API_TOKEN is missing in .env.local");
     return null;
   }
-  const subscriptionTier = "free"; //pricing logic to be implemented here
+  const { has } = await auth();
+  const subscriptionTier = has({ plan: "pro" }) ? "pro" : "free"; //pricing logic to be implemented here
   try {
     // check if user exists in strapi
     const existingUserResponse = await fetch(
@@ -87,10 +87,10 @@ export const checkUser = async () => {
       },
       body: JSON.stringify(userData),
     });
-    if(!newUserResponse.ok){
-        const errorText = await newUserResponse.text();
-        console.error("Error Creating User: ", errorText);
-        return null;
+    if (!newUserResponse.ok) {
+      const errorText = await newUserResponse.text();
+      console.error("Error Creating User: ", errorText);
+      return null;
     }
     const newUser = await newUserResponse.json();
     return newUser;

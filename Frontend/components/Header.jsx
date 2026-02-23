@@ -6,19 +6,26 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import React from "react";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
-import { Cookie, CookieIcon, Refrigerator } from "lucide-react";
-import UserDropdown from "./UserDropdown";
+import {
+  Badge,
+  Cookie,
+  CookieIcon,
+  Refrigerator,
+  Sparkles,
+} from "lucide-react";
+import UserDropdown from "./ui/UserDropdown";
 import { checkUser } from "@/lib/checkUser";
+import PricingModal from "./PricingModal";
 
-async function  Header() {
+async function Header() {
   const user = await checkUser();
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-stone-50/80 backdrop-blur-md z-50 supports-backdrop-filter:bg-stone-50/60">
-      <nav className="container mx-auto px-4 h-16 flex item-center justify-between">
+      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href={user ? "/dashboard" : "/"}>
           <Image
             src="/orange-logo.png"
@@ -47,7 +54,22 @@ async function  Header() {
         <div className="flex items-center space-x-4">
           {/* Show the user button when the user is signed in */}
           <SignedIn>
-            <UserDropdown/>
+           {user && (
+              <PricingModal subscriptionTier={user.subscriptionTier}>
+                <Badge
+                  variant="outline"
+                  className={`flex h-8 px-3 gap-1.5 rounded-full text-xs font-semibold transition-all ${
+                    user.subscriptionTier === "pro"
+                      ? "bg-linear-to-r from-orange-600 to-amber-500 text-white border-none shadow-sm"
+                      : "bg-stone-200/50 text-stone-600 border-stone-200 cursor-pointer hover:bg-stone-300/50 hover:border-stone-300"
+                  }`}
+                >
+                  
+                  
+                </Badge>
+              </PricingModal>
+            )}
+            <UserDropdown />
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
