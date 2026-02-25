@@ -10,16 +10,11 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
-import {
-  Badge,
-  Cookie,
-  CookieIcon,
-  Refrigerator,
-  Sparkles,
-} from "lucide-react";
+import { Cookie, CookieIcon, Refrigerator, Sparkles } from "lucide-react";
 import UserDropdown from "./ui/UserDropdown";
 import { checkUser } from "@/lib/checkUser";
 import PricingModal from "./PricingModal";
+import { Badge } from "./ui/badge";
 
 async function Header() {
   const user = await checkUser();
@@ -54,7 +49,7 @@ async function Header() {
         <div className="flex items-center space-x-4">
           {/* Show the user button when the user is signed in */}
           <SignedIn>
-           {user && (
+            {user && (
               <PricingModal subscriptionTier={user.subscriptionTier}>
                 <Badge
                   variant="outline"
@@ -64,8 +59,15 @@ async function Header() {
                       : "bg-stone-200/50 text-stone-600 border-stone-200 cursor-pointer hover:bg-stone-300/50 hover:border-stone-300"
                   }`}
                 >
-                  
-                  
+                  <Sparkles
+                    className={`h-3 w-3 ${
+                      user.subscriptionTier === "pro"
+                        ? "text-white fill-white/20"
+                        : "text-stone-500"
+                    }`}
+                  />
+
+                  {user.subscriptionTier === "pro" ? "Pro Chef" : "Free Plan"}
                 </Badge>
               </PricingModal>
             )}
