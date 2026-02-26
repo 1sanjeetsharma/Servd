@@ -27,7 +27,7 @@ export async function scanPantryImage(formData) {
       userId: user.clerkId,
       requested: 1,
     });
-    if (decision.isDenied()) {
+    if (decision.isDenied()||decision.type =="ERROR") {
       if (decision.reason.isRateLimit()) {
         throw new Error(
           `Monthly scan limit reached ${isPro ? "Please contact support if you need more scans" : "Upgrade to Pro for Unlimited scans!"}`,
@@ -71,13 +71,13 @@ Rules:
     ]);
     const response = await result.response;
     const text = response.text();
+    // console.log("text:", text);
     let ingredients;
     try {
-      const cleanText = text
-        .raplace(/```json\n?/g, "")
-        .replace(/```\n/g, "")
-        .trim();
-      ingredients = JSON.parse(cleanText);
+      const match = text.match(/\[[\s\S]*\]/);
+      if (!match) throw new Error("No JSON found");
+      ingredients = JSON.parse(match[0]);
+      // console.log("RAW:", JSON.stringify(text));
     } catch (error) {
       console.error("Failed to parse Gemini response:", text);
       throw new Error("Failed to parse ingredients. Please try again.");
@@ -106,7 +106,7 @@ export async function saveToPantry(formData) {
     }
     const ingredientsJson = formData.get("ingredients");
     const ingredients = JSON.parse(ingredientsJson);
-    if (!ingredients || ingredientslength === 0) {
+    if (!ingredients || ingredients.length === 0) {
       throw new Error("No ingredients to save");
     }
     const savedItems = [];
@@ -121,7 +121,7 @@ export async function saveToPantry(formData) {
           data: {
             name: ingredient.name,
             quantity: ingredient.quantity,
-            imgaUrl: "",
+            imageURL: "",
             owner: user.id,
           },
         }),
@@ -165,11 +165,13 @@ export async function addPantryItemManually(formData) {
         data: {
           name: name.trim(),
           quantity: quantity.trim(),
-          imageUrl: "",
+          imageURL: "",
           owner: user.id,
         },
       }),
     });
+    console.log("data:", name, quantity);
+    console.log("response:", response);
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Failed toadd item:", errorText);
@@ -258,11 +260,11 @@ export async function updatePantryItem(formData) {
 
     const name = formData.get("name");
     const quantity = formData.get("quantity");
-    const itemId = formData.get('itemId');
+    const itemId = formData.get("itemId");
     if (!name || !quantity) {
       throw new Error("Name and qunatity are required");
     }
-    
+
     const response = await fetch(`${STRAPI_URL}/api/pantry-items/${itemId}`, {
       method: "PUT",
       headers: {
@@ -273,13 +275,10 @@ export async function updatePantryItem(formData) {
         data: {
           name: name.trim(),
           quantity: quantity.trim(),
-          
         },
       }),
     });
     if (!response.ok) {
-      
-      
       throw new Error("Failed to update item ");
     }
     const data = await response.json();
