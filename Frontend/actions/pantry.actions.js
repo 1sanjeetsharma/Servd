@@ -43,9 +43,9 @@ export async function scanPantryImage(formData) {
     const buffer = Buffer.from(bytes);
     const base64Image = buffer.toString("base64");
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-lite",
-    });
+      const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash-lite",
+      });
     const prompt = `You are a professional chef and ingredient recognition expert. Analyze this image of a pantry/fridge and identify all visible food ingredients.
 
 Return ONLY a valid JSON array with this exact structure (no markdown, no explanations):

@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
           <footer className="py-8 px-4 border-t">
             <div className="max-w-6xl mx-auto flex justify-center items-center">
               <p className="text-stone-500 text-sm">
-                Made with love by Sanjeet Sharma
+                <a href={''}>GoBack To PortFolio?</a>
               </p>
             </div>
           </footer>

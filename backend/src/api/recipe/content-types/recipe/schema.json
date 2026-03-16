@@ -15,7 +15,7 @@
       "type": "string",
       "required": true
     },
-    "discription": {
+    "description": {
       "type": "blocks"
     },
     "cuisine": {
@@ -71,16 +71,10 @@
       "required": true,
       "default": false
     },
-    "recipes": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::recipe.recipe",
-      "mappedBy": "author"
-    },
     "author": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::recipe.recipe",
+      "target": "plugin::users-permissions.user",
       "inversedBy": "recipes"
     },
     "prepTime": {

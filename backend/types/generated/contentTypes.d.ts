@@ -512,7 +512,10 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    author: Schema.Attribute.Relation<'manyToOne', 'api::recipe.recipe'>;
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     category: Schema.Attribute.Enumeration<
       ['breakfast', 'lunch', 'dinner', 'snack', 'dessert']
     >;
@@ -546,7 +549,7 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
         'other',
       ]
     >;
-    discription: Schema.Attribute.Blocks;
+    description: Schema.Attribute.Blocks;
     imageURL: Schema.Attribute.String;
     ingredients: Schema.Attribute.JSON & Schema.Attribute.Required;
     instructions: Schema.Attribute.JSON & Schema.Attribute.Required;
@@ -562,7 +565,6 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
     nutrition: Schema.Attribute.JSON;
     prepTime: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
-    recipes: Schema.Attribute.Relation<'oneToMany', 'api::recipe.recipe'>;
     saved_recipes: Schema.Attribute.Relation<
       'oneToMany',
       'api::saved-recipe.saved-recipe'
@@ -1102,6 +1104,7 @@ export interface PluginUsersPermissionsUser
       }>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    recipes: Schema.Attribute.Relation<'oneToMany', 'api::recipe.recipe'>;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
     role: Schema.Attribute.Relation<
       'manyToOne',

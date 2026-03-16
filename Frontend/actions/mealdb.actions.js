@@ -67,6 +67,7 @@ export const getMealsByCategory = async (category) => {
     }
 
     const data = await res.json();
+   
     return {
       success: true,
       meals: data.meals || [],
