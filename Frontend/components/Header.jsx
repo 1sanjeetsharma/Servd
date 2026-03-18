@@ -15,6 +15,7 @@ import UserDropdown from "./ui/UserDropdown";
 import { checkUser } from "@/lib/checkUser";
 import PricingModal from "./PricingModal";
 import { Badge } from "./ui/badge";
+import HowToCookModal from "./HowToCookModal";
 
 async function Header() {
   const user = await checkUser();
@@ -49,6 +50,8 @@ async function Header() {
         <div className="flex items-center space-x-4">
           {/* Show the user button when the user is signed in */}
           <SignedIn>
+            {/* how to cook modal */}
+            <HowToCookModal />
             {user && (
               <PricingModal subscriptionTier={user.subscriptionTier}>
                 <Badge
