@@ -105,10 +105,16 @@ http://localhost:1337
 Create `.env.local` inside **frontend**:
 
 ```env
-NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-GOOGLE_API_KEY=your_key
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_key
 CLERK_SECRET_KEY=your_key
-ARCJET_KEY=your_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL =  /sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL =  /sign-up
+ARCJET_KEY = your_key
+STRAPI_API_TOKEN =your_key
+NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+GEMINI_API_KEY = your_key
+UNSPLASH_ACCESS_KEY = your_key
+UNSPLASH_SECRET_KEY = your_key
 ```
 
 ---
