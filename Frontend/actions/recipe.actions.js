@@ -144,10 +144,8 @@ async function fetchRecipeImage(recipeName) {
     const data = await response.json();
     if (data.results && data.results.length > 0) {
       const photo = data.results[0];
-      console.log("Found Unsplash Image", photo.urls.regular);
       return photo.urls.regular;
     }
-    console.log("No unsplash Image found for: ", reicpeName);
     return "";
   } catch (error) {
     console.error("Error fetching unsplash image:", error);
@@ -171,7 +169,6 @@ export async function getOrGenerateRecipe(formData) {
     const normalizedTitle = normalizeTitle(recipeName);
 
     // step 1: CHECK IF RECIPE ALREADY EXIST IN DB (CASE-INTENSICE SEARCH)
-    console.log("checking if recipe already exist in database");
     const searchResponse = await fetch(
       `${STRAPI_URL}/api/recipes?filters[title][$eqi]=${encodeURIComponent(normalizedTitle)}&populate=*`,
       {
@@ -199,7 +196,6 @@ export async function getOrGenerateRecipe(formData) {
           const savedData = await savedRecipeResponse.json();
           isSaved = savedData.data && savedData.data.length > 0;
         }
-        console.log("recipe already in db");
         return {
           success: true,
           recipe: searchData.data[0],
@@ -513,7 +509,6 @@ export async function getSavedRecipes() {
         cache: "no-store",
       },
     );
-    console.log("response of saved Recipes:", response);
     if (!response.ok) {
       throw new Error("Failed to fetch Saved Recipes");
     }

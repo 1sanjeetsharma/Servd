@@ -71,13 +71,11 @@ Rules:
     ]);
     const response = await result.response;
     const text = response.text();
-    // console.log("text:", text);
     let ingredients;
     try {
       const match = text.match(/\[[\s\S]*\]/);
       if (!match) throw new Error("No JSON found");
       ingredients = JSON.parse(match[0]);
-      // console.log("RAW:", JSON.stringify(text));
     } catch (error) {
       console.error("Failed to parse Gemini response:", text);
       throw new Error("Failed to parse ingredients. Please try again.");
@@ -170,8 +168,7 @@ export async function addPantryItemManually(formData) {
         },
       }),
     });
-    console.log("data:", name, quantity);
-    console.log("response:", response);
+   
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Failed toadd item:", errorText);

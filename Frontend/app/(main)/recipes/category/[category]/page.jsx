@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 export default function CategoryRecipesPage() {
   const params = useParams();
   const category = params.category;
-  console.log("category:", category);
   return (
     <RecipeGrid
       type={"category"}

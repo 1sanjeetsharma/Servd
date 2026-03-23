@@ -58,7 +58,6 @@ const RecipePage = () => {
       data: removeData,
       fn: removeFromCollection,
     } = useFetch(removeRecipeFromCollection);
-    console.log("data:", recipeData);
     //handle Save success
     useEffect(() => {
       if (saveData?.success) {

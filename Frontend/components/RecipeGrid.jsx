@@ -14,20 +14,16 @@ export default function RecipeGrid({
 }) {
   const { loading, data, fn: fetchMeals } = useFetch(fetchAction);
 
-  console.log("i am here1");
   useEffect(() => {
-    console.log("i am here");
     if (value) {
       // Capitalize first letter for API call
       const formattedValue = value.charAt(0).toUpperCase() + value.slice(1);
-      console.log("formattedValue", formattedValue);
       fetchMeals(formattedValue);
     }
   }, [value]);
 
   const meals = data?.meals || [];
   const displayName = value?.replace(/-/g, " "); // Convert "saudi-arabian" to "saudi arabian"
-  console.log("in recipecard:", data, loading, meals, type, value);
 
   return (
     <div className="min-h-screen bg-stone-50 pt-14 pb-16 px-4">
